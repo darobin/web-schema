@@ -1,6 +1,6 @@
 
-var JSONValidate = require("..").JSONValidate
-,   expect = require("expect.js")
+var JSONValidate = typeof(JSONValidate) === "undefined" ? require("..").JSONValidate : JSONValidate
+,   expect = typeof(expect) === "undefined" ? require("expect.js") : expect
 ;
 
 describe("Typing", function () {
