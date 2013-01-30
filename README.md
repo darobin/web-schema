@@ -85,9 +85,32 @@ No additional constraints.
 
 ### any
 
+Absolutely anything goes here.
+
+Example schema:
+
+    { "type": "any" }
+
+No additional constraints.
 
 ### boolean
 
+The object is a boolean value (true or false). Note that this is strictly for booleans,
+and not for values that are truthy or falsy.
+
+Example schemata:
+
+    { "type": "boolean" }
+    {
+        "type": "boolean"
+    ,   "enum": [true]
+    }
+
+Additional constraints:
+
+* `enum`: The object must match one of the values in the `enum` array. Since the boolean
+  type only takes two values this constraint is only ever useful if you wish to restrict
+  a value to either always being true or always being false (as in the second example above).
 
 ### string
 
