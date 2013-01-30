@@ -98,9 +98,12 @@ No additional constraints.
 The object is a boolean value (true or false). Note that this is strictly for booleans,
 and not for values that are truthy or falsy.
 
-Example schemata:
+Example schema:
 
     { "type": "boolean" }
+
+Other example:    
+
     {
         "type": "boolean"
     ,   "enum": [true]
@@ -114,6 +117,37 @@ Additional constraints:
 
 ### string
 
+The object is a string. A number of constraints on length, patterns, and enumerations apply.
+Note that these are strictly strings and not objects that stringify.
+
+Example schemata:
+
+    { "type": "string" }
+    
+    {
+        "type": "string"
+    ,   "enum": ["carrot", "banana", "donkey"]
+    }
+    
+    {
+        "type": "string"
+    ,   "pattern": "a{3}\\d\\d"
+    }
+    
+    {
+        "type": "string"
+    ,   "minLength": 2
+    ,   "maxLength": 17
+    }
+
+Additional constraints:
+
+* `enum`: The object must match one of the values in the `enum` array. All of these
+  must be strings.
+* `pattern`: A regular expression that the string must match. Note that since it is
+  conveyed as a string you will need to escape backslashes.
+  Additional constraints:
+* `minLength` and `maxLength`: The minimal and maximal length of the string (inclusive).
 
 ### number
 
