@@ -32,6 +32,40 @@ resolved into `json-validate`.
 
 # API
 
+The API is very simple, the following example probably tells you all you need to know:
+
+```javascript
+var jv = new JSONValidate();
+var result = jv.validate(object, schema);
+if (result.ok) {
+    // victory \o/
+}
+else {
+    console.log("JSON has the following errors: " + result.errors.join(", ") + " at path " + result.path);
+}
+```
+
+## var jv = new JSONValidate()
+
+A simple constructor that takes no arguments.
+
+## var result = jv.validate(object, schema);
+
+This takes an object that is parsed JSON (or any in-memory equivalent) and a schema that
+corresponds to the subset of JSON Schema described in the following section. Note that 
+`validate()` will throw if you schema is invalid.
+
+The return value is an object with the following fields:
+
+* `ok`: true if the JSON is valid, false otherwise.
+* `errors`: a list of human-readable strings describing the errors that were encountered. In
+  most cases `json-validate` will only return one single error as it does not currently try
+  to keep processing the JSON when it finds a problem, but in some cases it can return several
+  errors at once, and this is likely to increase going forward (though likely limited to finding
+  several problems with just one item). If there were no errors this array is empty.
+* `path`: a string indicating the path in the object at which the errors were found. It looks like
+  `$root.field1.field2[5]`. The idea is that if you replace `$root` with the object you passed you
+  will get to the problematic value (this is intended for human debugging though).
 
 # Supported schema constructs
 
