@@ -8,7 +8,7 @@ JSON documents. It supports a limited subset of JSON Schema.
 
 The usual simple:
 
-    npm install json-validate
+    npm install json-validation
 
 In order to run in a browser, you simply need to include the `json-validate.js` file,
 after having included `underscore.js` on which it depends.

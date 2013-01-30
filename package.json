@@ -1,5 +1,5 @@
 {
-    "name":         "json-validate"
+    "name":         "json-validation"
 ,   "description":  "A simple JSON validation package (subset of JSON Schema)"
 ,   "version":      "1.0.0"
 ,   "author":       "Robin Berjon <robin@berjon.com>"
