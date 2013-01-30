@@ -69,4 +69,36 @@ The return value is an object with the following fields:
 
 # Supported schema constructs
 
+A schema is basically a nested structure of objects that describe the constraints on a JSON
+instance at that nesting level. Each of these objects is keyed off a specific fundamental 
+`type`, and the constraints that can be applied to the value depend on that fundamental type.
 
+### null
+
+The object is `null`.
+
+Example schema:
+
+    { "type": "null" }
+
+No additional constraints.
+
+### any
+
+
+### boolean
+
+
+### string
+
+
+### number
+
+
+### object
+
+
+### array
+
+
+### union types
