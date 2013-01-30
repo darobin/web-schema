@@ -45,11 +45,11 @@ else {
 }
 ```
 
-## var jv = new JSONValidate()
+#### var jv = new JSONValidate()
 
 A simple constructor that takes no arguments.
 
-## var result = jv.validate(object, schema);
+#### var result = jv.validate(object, schema);
 
 This takes an object that is parsed JSON (or any in-memory equivalent) and a schema that
 corresponds to the subset of JSON Schema described in the following section. Note that 
