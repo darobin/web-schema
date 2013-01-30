@@ -151,11 +151,71 @@ Additional constraints:
 
 ### number
 
+The object is a number. It can be further constrained on enumeration, minimum, and
+maximum values.
+
+Example schemata:
+
+    { "type": "number" }
+    
+    {
+        "type": "number"
+    ,   "enum": [5, 17, 23, 42]
+    }
+    
+    {
+        "type": "number"
+    ,   "minimum": 23
+    ,   "exclusiveMaximum": 57.2
+    }
+
+Additional constraints:
+
+* `enum`: The object must match one of the values in the `enum` array. All of these
+  must be numbers.
+* `minimum`, `maximum`, `exclusiveMinimum`, and `exclusiveMaximum`: minimal and
+  maximal boundaries on the number's value, either inclusive or exclusive.
+
 
 ### object
 
+The object is, well, an object. Its properties can be enumerated and themselves 
+recursively defined and constrained.
+
+Example schemata:
+
+    { "type": "object" }
+    
+    {
+        "type": "object"
+    ,   "properties": {
+            "fullName":  { "type": "string", "required": true }
+        ,   "age":       { "type": "number", "minimum": 0 }
+        ,   "superHeroIdentity": {
+                "type": "object"
+            ,   "coolName": { "type": "string" }
+            ,   "superPower": {
+                    "type": "string"
+                ,   "enum": ["flying", "telekinesis", "parsing MIME"]
+                }
+            }
+        }
+    }
+
+Additional constraint:
+
+* `properties`: This is a simply an object the keys of which are those that are
+  being constrained on the object (object keys not listed here are not only allowed
+  but also unconstrained). The values for those keys are the types of the values
+  for the matching fields in JSON instances.
+
+In addition to its regular type information, each property value can also take a
+boolean constraint called `required`. If set to true, then this field must be
+present in the instance (the default is for it to be optional).
 
 ### array
 
 
 ### union types
+
+
