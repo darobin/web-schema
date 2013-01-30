@@ -1,7 +1,7 @@
 
 # Overview
 
-`json-validate` is a small library that performs, shockingly enough, validation of
+`json-validation` is a small library that performs, shockingly enough, validation of
 JSON documents. It supports a limited subset of JSON Schema.
 
 # Installing
@@ -10,7 +10,7 @@ The usual simple:
 
     npm install json-validation
 
-In order to run in a browser, you simply need to include the `json-validate.js` file,
+In order to run in a browser, you simply need to include the `json-validation.js` file,
 after having included `underscore.js` on which it depends.
 
 # Why not JSON Schema, one of the existing implementations?
@@ -28,14 +28,14 @@ they don't cause excessive bloat).
 One notable difference is that JSON Schema support schema referencing one another. Doing
 that is an explicit non-goal of this library. But it ought to be easy to implement JSON
 referencing separately (in another small library) and feed schemata with references 
-resolved into `json-validate`.
+resolved into `json-validation`.
 
 # API
 
 The API is very simple, the following example probably tells you all you need to know:
 
 ```javascript
-var jv = new JSONValidate();
+var jv = new JSONValidation();
 var result = jv.validate(object, schema);
 if (result.ok) {
     // victory \o/
@@ -45,7 +45,7 @@ else {
 }
 ```
 
-#### var jv = new JSONValidate()
+#### var jv = new JSONValidation()
 
 A simple constructor that takes no arguments.
 
@@ -59,7 +59,7 @@ The return value is an object with the following fields:
 
 * `ok`: true if the JSON is valid, false otherwise.
 * `errors`: a list of human-readable strings describing the errors that were encountered. In
-  most cases `json-validate` will only return one single error as it does not currently try
+  most cases `json-validation` will only return one single error as it does not currently try
   to keep processing the JSON when it finds a problem, but in some cases it can return several
   errors at once, and this is likely to increase going forward (though likely limited to finding
   several problems with just one item). If there were no errors this array is empty.

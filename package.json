@@ -10,6 +10,6 @@
         "mocha":    "1.7.3"
     ,   "expect.js":"0.2.0"
     }
-,   "repository":   "git://github.com/darobin/json-validate"
-,   "main":         "lib/json-validate"
+,   "repository":   "git://github.com/darobin/json-validation"
+,   "main":         "lib/json-validation"
 }

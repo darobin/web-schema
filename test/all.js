@@ -1,10 +1,10 @@
 
-var JSONValidate = typeof(JSONValidate) === "undefined" ? require("..").JSONValidate : JSONValidate
+var JSONValidation = typeof(JSONValidation) === "undefined" ? require("..").JSONValidation : JSONValidation
 ,   expect = typeof(expect) === "undefined" ? require("expect.js") : expect
 ;
 
 describe("Typing", function () {
-    var ct = new JSONValidate();
+    var ct = new JSONValidation();
     describe("#validateNull", function () {
         var schema = { type: "null" };
         it("should accept null", function () {
