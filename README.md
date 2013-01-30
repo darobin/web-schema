@@ -215,6 +215,40 @@ present in the instance (the default is for it to be optional).
 
 ### array
 
+The object is an array. This can be further constrained with minimal and maximal
+lengths, as well as with constraints on the types of the objects contained in the
+array.
+
+Example schemata:
+
+    { "type": "array" }
+    
+    {
+        "type":         "array"
+    ,   "minItems":     3
+    ,   "maxItems":     200
+    ,   "items":        { "type": "number" }
+    ,   "uniqueItems":  true
+    }
+    
+    {
+        "type":             "array"
+    ,   "items":            [ { "type": "number" }, { "type": "string" }, { "type": "string" } ]
+    ,   "additionalItems":  true
+    }
+
+Additional constraints:
+
+* `minItems` and `maxItems`: The minimal and maximal length of the array, inclusive.
+* `items` (with a type): When `items` is a type definition, then all array members will be
+  validated against that type.
+* `items` (with an array): When `items` is an array of type definitions, then the array members
+  at a given offset will be validated against the type definition at the same offset. The array
+  instance is implicitly constrained to be of the same length as the `items` constraint, unless
+  `additionalItems` is specified.
+* `additionalItems`: In the case of an array-based `items`, a boolean that allows for additional array members
+  after those constrained by the provided types. Those additional members are not validated.
+* `uniqueItems`: If true, checks that the values in the array are unique (using ===, recursively).
 
 ### union types
 
