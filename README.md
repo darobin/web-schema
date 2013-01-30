@@ -250,6 +250,24 @@ Additional constraints:
   after those constrained by the provided types. Those additional members are not validated.
 * `uniqueItems`: If true, checks that the values in the array are unique (using ===, recursively).
 
-### union types
+### Union types
 
+It is also possible to define union types, which is to say, cases in which validation will be
+tried against multiple type definitions until one matches or the list of options in the union
+is exhausted.
 
+Example schemata:
+
+    { "type": ["number", "string"] }
+    
+    {
+        "type": [
+            { "type": "string", "pattern": "^\\w+$" }
+        ,   { "type": "array", "minItems": 3 }
+        ,   "boolean"
+        ]
+    }
+
+A union is defined by providing an array of options for the `type`. Each item in that array may
+be either just the string name of a fundamental type, or a full-fledged type definition. If none
+of the types match, then the validation fails.
