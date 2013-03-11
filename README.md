@@ -1,16 +1,25 @@
 
 # Overview
 
-`json-validation` is a small library that performs, shockingly enough, validation of
-JSON documents. It supports a limited subset of JSON Schema.
+It is extremely common for web applications to be using JSON as the payload format
+to talk to a server backend. What's more, these are often edited through HTML forms.
+While JSON Schema is overall fine for general-purpose JSON validation, HTML forms
+do have some specificities that it would make sense to apply to validating JSON
+as well since those two technologies are brought to work together.
+
+`web-schema` is a small library that intends to perform this union. It currently supports 
+a subset of JSON Schema. I am in the process of adding new types that correspond to what
+HTML forms can do. Some are trivial (e.g. using "text" instead of "string" to signal that
+that schema item is best edited through a `textarea`) while others are more advanced (e.g.
+"html" for editable content, "email", "url", and other input types.).
 
 # Installing
 
 The usual simple:
 
-    npm install json-validation
+    npm install web-schema
 
-In order to run in a browser, you simply need to include the `json-validation.js` file,
+In order to run in a browser, you simply need to include the `web-schema.js` file,
 after having included `underscore.js` on which it depends.
 
 # Why not JSON Schema, one of the existing implementations?
@@ -21,22 +30,30 @@ date. Those that weren't tended to break in the contexts in which I was using th
 were generally rather larger and more complex than my needs. It turned out to be simpler
 to just write a validator that matches my needs.
 
+What's more, I needed to generate HTML forms from the schema. This is of course possible
+using JSON Schema, but in order to be properly functional it requires hinting. That seemed
+to be a mismatch that could be addressed by rendering the schema language closer to what
+HTML forms can capture.
+
 I release this library on the assumption that if I needed it, others might too. I may
 add support for more of JSON Schema, and I will certainly take pull requests (so long as
-they don't cause excessive bloat).
+they don't cause excessive bloat). I am in the process of adding more types to map to
+forms.
 
-One notable difference is that JSON Schema support schema referencing one another. Doing
+One notable difference with JSON Schema is that it supports schemata referencing one another. Doing
 that is an explicit non-goal of this library. But it ought to be easy to implement JSON
 referencing separately (in another small library) and feed schemata with references 
-resolved into `json-validation`.
+resolved into `web-schema`.
+
+If you are familiar with JSON Schema you won't be lost here: a lot is shared.
 
 # API
 
 The API is very simple, the following example probably tells you all you need to know:
 
 ```javascript
-var jv = new JSONValidation();
-var result = jv.validate(object, schema);
+var ws = new WebSchema();
+var result = ws.validate(object, schema);
 if (result.ok) {
     // victory \o/
 }
@@ -45,21 +62,21 @@ else {
 }
 ```
 
-#### var jv = new JSONValidation()
+#### var ws = new WebSchema()
 
 A simple constructor that takes no arguments.
 
-#### var result = jv.validate(object, schema);
+#### var result = ws.validate(object, schema);
 
 This takes an object that is parsed JSON (or any in-memory equivalent) and a schema that
-corresponds to the subset of JSON Schema described in the following section. Note that 
+corresponds to the schema language described in the following section. Note that 
 `validate()` will throw if you schema is invalid.
 
 The return value is an object with the following fields:
 
 * `ok`: true if the JSON is valid, false otherwise.
 * `errors`: a list of human-readable strings describing the errors that were encountered. In
-  most cases `json-validation` will only return one single error as it does not currently try
+  most cases `web-schema` will only return one single error as it does not currently try
   to keep processing the JSON when it finds a problem, but in some cases it can return several
   errors at once, and this is likely to increase going forward (though likely limited to finding
   several problems with just one item). If there were no errors this array is empty.
