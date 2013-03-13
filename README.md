@@ -132,10 +132,13 @@ Additional constraints:
   type only takes two values this constraint is only ever useful if you wish to restrict
   a value to either always being true or always being false (as in the second example above).
 
-### string
+### string or text
 
 The object is a string. A number of constraints on length, patterns, and enumerations apply.
 Note that these are strictly strings and not objects that stringify.
+
+The "text" type is also possible and is strictly equivalent to "string". The primary difference
+is that you would expect to map it to `textarea` rather than `input`.
 
 Example schemata:
 

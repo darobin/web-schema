@@ -77,63 +77,68 @@ describe("Typing", function () {
         });
     });
 
-    describe("#validateString", function () {
-        var schema = { type: "string" };
-        it("should accept strings", function () {
-            expect(ct.validate("", schema).ok).to.be.ok;
-            expect(ct.validate("false", schema).ok).to.be.ok;
-        });
-        it("should reject non-strings", function () {
-            expect(ct.validate(0, schema).ok).to.not.be.ok;
-            expect(ct.validate(1, schema).ok).to.not.be.ok;
-            expect(ct.validate(true, schema).ok).to.not.be.ok;
-            expect(ct.validate(null, schema).ok).to.not.be.ok;
-            expect(ct.validate(undefined, schema).ok).to.not.be.ok;
-        });
-        it("should report errors correctly", function () {
-            expect(ct.validate(42, schema).errors.length).to.equal(1);
-            expect(ct.validate(42, schema).errors[0]).to.equal("Object is not a string.");
-            expect(ct.validate(42, schema).path).to.equal("$root");
-        });
-        it("should handle enums", function () {
-            schema["enum"] = ["aaa", "bbb"];
-            expect(ct.validate("aaa", schema).ok).to.be.ok;
-            expect(ct.validate("bbb", schema).ok).to.be.ok;
-            expect(ct.validate("zorglub", schema).ok).to.not.be.ok;
-            expect(ct.validate("zorglub", schema).errors.length).to.equal(1);
-            expect(ct.validate("zorglub", schema).errors[0]).to.equal("Object not in enumeration, must be one of: aaa, bbb");
-            expect(ct.validate("zorglub", schema).path).to.equal("$root");
-            delete schema["enum"];
-        });
-        it("should handle patterns", function () {
-            schema.pattern = "a{3}\\d\\d";
-            expect(ct.validate("aaa42", schema).ok).to.be.ok;
-            expect(ct.validate("aaa17", schema).ok).to.be.ok;
-            expect(ct.validate("-jhljaaa17jkh yt", schema).ok).to.be.ok;
-            expect(ct.validate("zorglub", schema).ok).to.not.be.ok;
-            expect(ct.validate("zorglub", schema).errors.length).to.equal(1);
-            expect(ct.validate("zorglub", schema).errors[0]).to.equal("String does not match pattern: a{3}\\d\\d");
-            expect(ct.validate("zorglub", schema).path).to.equal("$root");
-            delete schema.pattern;
-        });
-        it("should handle minLength and maxLength", function () {
-            schema.minLength = 2;
-            schema.maxLength = 5;
-            expect(ct.validate("aa", schema).ok).to.be.ok;
-            expect(ct.validate("aaa", schema).ok).to.be.ok;
-            expect(ct.validate("aaaaa", schema).ok).to.be.ok;
-            expect(ct.validate("z", schema).ok).to.not.be.ok;
-            expect(ct.validate("z", schema).errors.length).to.equal(1);
-            expect(ct.validate("z", schema).errors[0]).to.equal("String shorter than 2");
-            expect(ct.validate("z", schema).path).to.equal("$root");
-            expect(ct.validate("zorglub", schema).ok).to.not.be.ok;
-            expect(ct.validate("zorglub", schema).errors.length).to.equal(1);
-            expect(ct.validate("zorglub", schema).errors[0]).to.equal("String longer than 5");
-            expect(ct.validate("zorglub", schema).path).to.equal("$root");
-            delete schema.minLength;
-            delete schema.maxLength;
-        });
-    });
+    function textualTester (type) {
+        return function () {
+            var schema = { type: type };
+            it("should accept " + type + "s", function () {
+                expect(ct.validate("", schema).ok).to.be.ok;
+                expect(ct.validate("false", schema).ok).to.be.ok;
+            });
+            it("should reject non-" + type + "s", function () {
+                expect(ct.validate(0, schema).ok).to.not.be.ok;
+                expect(ct.validate(1, schema).ok).to.not.be.ok;
+                expect(ct.validate(true, schema).ok).to.not.be.ok;
+                expect(ct.validate(null, schema).ok).to.not.be.ok;
+                expect(ct.validate(undefined, schema).ok).to.not.be.ok;
+            });
+            it("should report errors correctly", function () {
+                expect(ct.validate(42, schema).errors.length).to.equal(1);
+                expect(ct.validate(42, schema).errors[0]).to.equal("Object is not a string.");
+                expect(ct.validate(42, schema).path).to.equal("$root");
+            });
+            it("should handle enums", function () {
+                schema["enum"] = ["aaa", "bbb"];
+                expect(ct.validate("aaa", schema).ok).to.be.ok;
+                expect(ct.validate("bbb", schema).ok).to.be.ok;
+                expect(ct.validate("zorglub", schema).ok).to.not.be.ok;
+                expect(ct.validate("zorglub", schema).errors.length).to.equal(1);
+                expect(ct.validate("zorglub", schema).errors[0]).to.equal("Object not in enumeration, must be one of: aaa, bbb");
+                expect(ct.validate("zorglub", schema).path).to.equal("$root");
+                delete schema["enum"];
+            });
+            it("should handle patterns", function () {
+                schema.pattern = "a{3}\\d\\d";
+                expect(ct.validate("aaa42", schema).ok).to.be.ok;
+                expect(ct.validate("aaa17", schema).ok).to.be.ok;
+                expect(ct.validate("-jhljaaa17jkh yt", schema).ok).to.be.ok;
+                expect(ct.validate("zorglub", schema).ok).to.not.be.ok;
+                expect(ct.validate("zorglub", schema).errors.length).to.equal(1);
+                expect(ct.validate("zorglub", schema).errors[0]).to.equal("String does not match pattern: a{3}\\d\\d");
+                expect(ct.validate("zorglub", schema).path).to.equal("$root");
+                delete schema.pattern;
+            });
+            it("should handle minLength and maxLength", function () {
+                schema.minLength = 2;
+                schema.maxLength = 5;
+                expect(ct.validate("aa", schema).ok).to.be.ok;
+                expect(ct.validate("aaa", schema).ok).to.be.ok;
+                expect(ct.validate("aaaaa", schema).ok).to.be.ok;
+                expect(ct.validate("z", schema).ok).to.not.be.ok;
+                expect(ct.validate("z", schema).errors.length).to.equal(1);
+                expect(ct.validate("z", schema).errors[0]).to.equal("String shorter than 2");
+                expect(ct.validate("z", schema).path).to.equal("$root");
+                expect(ct.validate("zorglub", schema).ok).to.not.be.ok;
+                expect(ct.validate("zorglub", schema).errors.length).to.equal(1);
+                expect(ct.validate("zorglub", schema).errors[0]).to.equal("String longer than 5");
+                expect(ct.validate("zorglub", schema).path).to.equal("$root");
+                delete schema.minLength;
+                delete schema.maxLength;
+            });
+        };
+    }
+
+    describe("#validateString", textualTester("string"));
+    describe("#validateText", textualTester("text"));
 
     describe("#validateNumber", function () {
         var schema = { type: "number" };
