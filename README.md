@@ -292,17 +292,45 @@ A union is defined by providing an array of options for the `type`. Each item in
 be either just the string name of a fundamental type, or a full-fledged type definition. If none
 of the types match, then the validation fails.
 
+### Date
+
+This type describes a date. It is captured in JSON as a string that needs to match: `YYYY-MM-DD`.
+
+Example schema:
+
+    {
+        "type":         "date"
+    ,   "description":  "Date"
+    }
+
+It currently takes no additional constraints, but it likely will in the future.
+
+### Time
+
+This type describes a time without associated time zone information. It is captured in JSON as a string
+that needs to match: `HH:MM:SS.SSS` where the seconds are optional and the second fragments can have 
+between one and three digits.
+
+Example schema:
+
+    {
+        "type":         "time"
+    ,   "description":  "Time"
+    }
+
+It currently takes no additional constraints, but it likely will in the future.
+
 ### Datetime Local
 
 This type describes a date and time without associated time zone information. It is captured in
-JSON as a string that needs to match: YYYY-MM-DDTHH:MM:SS.SSS where the seconds are optional and 
+JSON as a string that needs to match: `YYYY-MM-DDTHH:MM:SS.SSS` where the seconds are optional and 
 the second fragments can have between one and three digits.
 
 Example schema:
 
     {
         "type":         "datetime-local"
-    ,   "description":  "Date"
+    ,   "description":  "Date and time"
     }
 
 It currently takes no additional constraints, but it likely will in the future.

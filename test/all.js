@@ -443,14 +443,14 @@ describe("Typing", function () {
 
     describe("#validateDatetimeLocal", function () {
         var schema = { type: "datetime-local" };
-        it("should accept dates", function () {
+        it("should accept datetimes", function () {
             expect(ct.validate("2013-03-21T21:21:42.123", schema).ok).to.be.ok;
             expect(ct.validate("2013-03-21T21:21:42.12", schema).ok).to.be.ok;
             expect(ct.validate("2013-03-21T21:21:42.1", schema).ok).to.be.ok;
             expect(ct.validate("2013-03-21T21:21:42", schema).ok).to.be.ok;
             expect(ct.validate("2013-03-21T21:21", schema).ok).to.be.ok;
         });
-        it("should reject non-dates", function () {
+        it("should reject non-datetimes", function () {
             expect(ct.validate("2013-03-21T21:21:42.1235", schema).ok).to.not.be.ok;
             expect(ct.validate("2013-03-21T21:21:42.", schema).ok).to.not.be.ok;
             expect(ct.validate("0000-03-21T21:21", schema).ok).to.not.be.ok;
@@ -469,10 +469,10 @@ describe("Typing", function () {
         });
         it("should report errors correctly", function () {
             expect(ct.validate(42, schema).errors.length).to.equal(1);
-            expect(ct.validate(42, schema).errors[0]).to.equal("Object is not a date string.");
+            expect(ct.validate(42, schema).errors[0]).to.equal("Object is not a datetime string.");
             expect(ct.validate(42, schema).path).to.equal("$root");
             var bad = {
-                "2013-03-21T21:21:42.1235": "Object does not match the date pattern."
+                "2013-03-21T21:21:42.1235": "Object does not match the datetime pattern."
             ,   "0000-03-21T21:21":         "Year out of range."
             ,   "1977-00-21T21:21":         "Month out of range."
             ,   "1977-13-21T21:21":         "Month out of range."
@@ -498,6 +498,92 @@ describe("Typing", function () {
         });
     });
 
+    describe("#validateDate", function () {
+        var schema = { type: "date" };
+        it("should accept dates", function () {
+            expect(ct.validate("2013-03-21", schema).ok).to.be.ok;
+        });
+        it("should reject non-dates", function () {
+            expect(ct.validate("zorglub", schema).ok).to.not.be.ok;
+            expect(ct.validate("0000-03-21", schema).ok).to.not.be.ok;
+            expect(ct.validate("1977-00-21", schema).ok).to.not.be.ok;
+            expect(ct.validate("1977-13-21", schema).ok).to.not.be.ok;
+            expect(ct.validate("1977-12-00", schema).ok).to.not.be.ok;
+            expect(ct.validate("1977-12-32", schema).ok).to.not.be.ok;
+            expect(ct.validate(42, schema).ok).to.not.be.ok;
+            expect(ct.validate(true, schema).ok).to.not.be.ok;
+            expect(ct.validate([], schema).ok).to.not.be.ok;
+            expect(ct.validate(null, schema).ok).to.not.be.ok;
+            expect(ct.validate(undefined, schema).ok).to.not.be.ok;
+        });
+        it("should report errors correctly", function () {
+            expect(ct.validate(42, schema).errors.length).to.equal(1);
+            expect(ct.validate(42, schema).errors[0]).to.equal("Object is not a date string.");
+            expect(ct.validate(42, schema).path).to.equal("$root");
+            var bad = {
+                "zorglub":      "Object does not match the date pattern."
+            ,   "0000-03-21":   "Year out of range."
+            ,   "1977-00-21":   "Month out of range."
+            ,   "1977-13-21":   "Month out of range."
+            ,   "1977-12-00":   "Day out of range."
+            ,   "1977-12-32":   "Day out of range."
+            };
+            for (var k in bad) {
+                expect(ct.validate(k, schema).errors.length).to.equal(1);
+                expect(ct.validate(k, schema).errors[0]).to.equal(bad[k]);
+                expect(ct.validate(k, schema).path).to.equal("$root");
+            }
+            expect(ct.validate("0000-13-47", schema).errors.length).to.equal(3);
+            expect(ct.validate("0000-13-47", schema).errors[0]).to.equal("Year out of range.");
+            expect(ct.validate("0000-13-47", schema).errors[1]).to.equal("Month out of range.");
+            expect(ct.validate("0000-13-47", schema).errors[2]).to.equal("Day out of range.");
+            expect(ct.validate("0000-13-47", schema).path).to.equal("$root");
+        });
+    });
+
+    describe("#validateTime", function () {
+        var schema = { type: "time" };
+        it("should accept times", function () {
+            expect(ct.validate("21:21:42.123", schema).ok).to.be.ok;
+            expect(ct.validate("21:21:42.12", schema).ok).to.be.ok;
+            expect(ct.validate("21:21:42.1", schema).ok).to.be.ok;
+            expect(ct.validate("21:21:42", schema).ok).to.be.ok;
+            expect(ct.validate("21:21", schema).ok).to.be.ok;
+        });
+        it("should reject non-times", function () {
+            expect(ct.validate("21:21:42.1235", schema).ok).to.not.be.ok;
+            expect(ct.validate("21:21:42.", schema).ok).to.not.be.ok;
+            expect(ct.validate("1977-12-31T24:21", schema).ok).to.not.be.ok;
+            expect(ct.validate("1977-12-31T23:60", schema).ok).to.not.be.ok;
+            expect(ct.validate("1977-12-31T23:59:60", schema).ok).to.not.be.ok;
+            expect(ct.validate(42, schema).ok).to.not.be.ok;
+            expect(ct.validate(true, schema).ok).to.not.be.ok;
+            expect(ct.validate([], schema).ok).to.not.be.ok;
+            expect(ct.validate(null, schema).ok).to.not.be.ok;
+            expect(ct.validate(undefined, schema).ok).to.not.be.ok;
+        });
+        it("should report errors correctly", function () {
+            expect(ct.validate(42, schema).errors.length).to.equal(1);
+            expect(ct.validate(42, schema).errors[0]).to.equal("Object is not a time string.");
+            expect(ct.validate(42, schema).path).to.equal("$root");
+            var bad = {
+                "whevs":    "Object does not match the time pattern."
+            ,   "24:21":    "Hours out of range."
+            ,   "23:60":    "Minutes out of range."
+            ,   "23:59:60": "Seconds out of range."
+            };
+            for (var k in bad) {
+                expect(ct.validate(k, schema).errors.length).to.equal(1);
+                expect(ct.validate(k, schema).errors[0]).to.equal(bad[k]);
+                expect(ct.validate(k, schema).path).to.equal("$root");
+            }
+            expect(ct.validate("62:77:99.217", schema).errors.length).to.equal(3);
+            expect(ct.validate("62:77:99.217", schema).errors[0]).to.equal("Hours out of range.");
+            expect(ct.validate("62:77:99.217", schema).errors[1]).to.equal("Minutes out of range.");
+            expect(ct.validate("62:77:99.217", schema).errors[2]).to.equal("Seconds out of range.");
+            expect(ct.validate("62:77:99.217", schema).path).to.equal("$root");
+        });
+    });
 });
 
 
