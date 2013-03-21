@@ -291,3 +291,18 @@ Example schemata:
 A union is defined by providing an array of options for the `type`. Each item in that array may
 be either just the string name of a fundamental type, or a full-fledged type definition. If none
 of the types match, then the validation fails.
+
+### Datetime Local
+
+This type describes a date and time without associated time zone information. It is captured in
+JSON as a string that needs to match: YYYY-MM-DDTHH:MM:SS.SSS where the seconds are optional and 
+the second fragments can have between one and three digits.
+
+Example schema:
+
+    {
+        "type":         "datetime-local"
+    ,   "description":  "Date"
+    }
+
+It currently takes no additional constraints, but it likely will in the future.
