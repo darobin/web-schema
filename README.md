@@ -1,6 +1,8 @@
 
 # Overview
 
+[![NPM version](https://badge.fury.io/js/web-schema.png)](http://badge.fury.io/js/web-schema)
+
 It is extremely common for web applications to be using JSON as the payload format
 to talk to a server backend. What's more, these are often edited through HTML forms.
 While JSON Schema is overall fine for general-purpose JSON validation, HTML forms
